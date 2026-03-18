@@ -393,196 +393,218 @@ export function ModulesGrid() {
   const SelIcon = sel.icon
 
   return (
-    <div id="modules">
-      {/* Filter bar */}
-      <div className="flex flex-wrap gap-2 mb-8">
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => setActive(cat)}
-            className={[
-              "rounded-xl px-4 py-2 text-[0.7rem] font-semibold tracking-[0.15em] uppercase transition-all duration-200",
-              active === cat
-                ? "bg-emerald-500 text-white"
-                : "border border-white/[0.10] bg-white/[0.025] text-white/50 hover:border-emerald-500/40 hover:text-emerald-400",
-            ].join(" ")}
-          >
-            {cat}
-          </button>
-        ))}
-      </div>
+    <section aria-label="Modules">
+      <div className="flex h-[680px] flex-col overflow-hidden rounded-[2rem] border border-white/[0.10] bg-white/[0.03] shadow-[0_24px_80px_rgba(0,0,0,0.45)] sm:h-[720px] lg:h-[760px]">
+        {/* Mac-like chrome */}
+        <div className="flex h-12 items-center gap-3 border-b border-white/[0.08] bg-white/[0.02] px-5 rounded-t-[2rem]">
+          <div className="flex items-center gap-2">
+            <span className="h-2.5 w-2.5 rounded-full border border-black/25 bg-red-500" />
+            <span className="h-2.5 w-2.5 rounded-full border border-black/25 bg-yellow-400" />
+            <span className="h-2.5 w-2.5 rounded-full border border-black/25 bg-emerald-500" />
+          </div>
 
-      {/* Master-detail layout */}
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:gap-6">
+          <div className="flex-1 text-center">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.03] px-3 py-1 text-[0.62rem] font-semibold tracking-[0.18em] uppercase text-white/45">
+              Modules
+            </div>
+          </div>
 
-        {/* Left: module list grouped by department */}
-        <div className="lg:w-80 xl:w-96 shrink-0">
-          <div className="overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.02]">
-            {grouped.map(([category, mods], gi) => {
-              const groupCol = categoryColors[category] ?? { bg: "bg-gray-500/10", text: "text-gray-400", border: "border-gray-500/25" }
-              return (
-                <div key={category}>
-                  {/* Department header */}
-                  <div className={`flex items-center gap-2 px-4 py-2 ${
-                    gi > 0 ? "border-t border-white/[0.07]" : ""
-                  } bg-white/[0.015]`}>
-                    <span className={`h-1.5 w-1.5 rounded-full bg-current shrink-0 ${groupCol.text}`} />
-                    <span className={`text-[0.6rem] font-bold tracking-[0.2em] uppercase ${groupCol.text}`}>
-                      {category}
-                    </span>
-                    <span className="ml-auto text-[0.6rem] text-white/20">{mods.length}</span>
-                  </div>
+          <div className="w-[52px]" />
+        </div>
 
-                  {/* Modules in this group */}
-                  {mods.map((m, i) => {
-                    const isActive = selected === m.id
-                    const Icon = m.icon
-                    return (
-                      <motion.button
-                        key={m.id}
-                        initial={{ opacity: 0, x: -8 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.22, delay: i * 0.02 }}
-                        onClick={() => setSelected(m.id)}
-                        className={[
-                          "group w-full flex items-center gap-3 px-4 py-3 text-left transition-all duration-150 border-t border-white/[0.04]",
-                          isActive ? "bg-white/[0.06]" : "hover:bg-white/[0.03]",
-                        ].join(" ")}
-                      >
-                        {/* Accent bar */}
-                        <span className={`w-0.5 h-7 shrink-0 rounded-full transition-all duration-200 ${
-                          isActive ? "bg-emerald-500" : "bg-transparent group-hover:bg-white/10"
-                        }`} />
+        {/* Screen content */}
+        <div className="flex-1 overflow-y-auto p-6 lg:p-8">
+          {/* Filter bar */}
+          <div className="mb-8 flex flex-wrap gap-2">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActive(cat)}
+                className={[
+                  "rounded-xl px-4 py-2 text-[0.7rem] font-semibold tracking-[0.15em] uppercase transition-all duration-200",
+                  active === cat
+                    ? "bg-emerald-500 text-white"
+                    : "border border-white/[0.10] bg-white/[0.025] text-white/50 hover:border-emerald-500/40 hover:text-emerald-400",
+                ].join(" ")}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
 
-                        {/* Icon */}
-                        <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg transition-all duration-200 ${
-                          isActive
-                            ? `${groupCol.bg} border ${groupCol.border}`
-                            : "bg-white/[0.03] border border-white/[0.06] group-hover:border-white/[0.12]"
-                        }`}>
-                          <Icon className={`h-3.5 w-3.5 ${isActive ? groupCol.text : "text-white/35 group-hover:text-white/60"}`} />
-                        </div>
+          {/* Master-detail layout */}
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:gap-6">
 
-                        {/* Title */}
-                        <div className="flex-1 min-w-0 flex items-center gap-2">
-                          <span className={`text-[0.8rem] font-medium truncate transition-colors duration-150 ${
-                            isActive ? "text-white" : "text-white/50 group-hover:text-white/80"
-                          }`}>
-                            {m.title}
-                          </span>
-                          {m.ai && (
-                            <span className="shrink-0 inline-flex items-center gap-0.5 rounded-full bg-violet-500/15 px-1.5 py-0.5 text-[0.52rem] font-bold tracking-wide text-violet-400 border border-violet-500/25">
-                              <Sparkles className="h-2 w-2" />AI
+            {/* Left: module list grouped by department */}
+            <div className="shrink-0 lg:w-80 xl:w-96">
+              <div className="overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.02]">
+                {grouped.map(([category, mods], gi) => {
+                  const groupCol = categoryColors[category] ?? { bg: "bg-gray-500/10", text: "text-gray-400", border: "border-gray-500/25" }
+                  return (
+                    <div key={category}>
+                      {/* Department header */}
+                      <div className={`flex items-center gap-2 px-4 py-2 ${
+                        gi > 0 ? "border-t border-white/[0.07]" : ""
+                      } bg-white/[0.015]`}>
+                        <span className={`h-1.5 w-1.5 shrink-0 rounded-full bg-current ${groupCol.text}`} />
+                        <span className={`text-[0.6rem] font-bold tracking-[0.2em] uppercase ${groupCol.text}`}>
+                          {category}
+                        </span>
+                        <span className="ml-auto text-[0.6rem] text-white/20">{mods.length}</span>
+                      </div>
+
+                      {/* Modules in this group */}
+                      {mods.map((m, i) => {
+                        const isActive = selected === m.id
+                        const Icon = m.icon
+                        return (
+                          <motion.button
+                            key={m.id}
+                            initial={{ opacity: 0, x: -8 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.22, delay: i * 0.02 }}
+                            onClick={() => setSelected(m.id)}
+                            className={[
+                              "group flex w-full items-center gap-3 border-t border-white/[0.04] px-4 py-3 text-left transition-all duration-150",
+                              isActive ? "bg-white/[0.06]" : "hover:bg-white/[0.03]",
+                            ].join(" ")}
+                          >
+                            {/* Accent bar */}
+                            <span className={`h-7 w-0.5 shrink-0 rounded-full transition-all duration-200 ${
+                              isActive ? "bg-emerald-500" : "bg-transparent group-hover:bg-white/10"
+                            }`} />
+
+                            {/* Icon */}
+                            <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg transition-all duration-200 ${
+                              isActive
+                                ? `${groupCol.bg} border ${groupCol.border}`
+                                : "border border-white/[0.06] bg-white/[0.03] group-hover:border-white/[0.12]"
+                            }`}>
+                              <Icon className={`h-3.5 w-3.5 ${isActive ? groupCol.text : "text-white/35 group-hover:text-white/60"}`} />
+                            </div>
+
+                            {/* Title */}
+                            <div className="flex min-w-0 flex-1 items-center gap-2">
+                              <span className={`truncate text-[0.8rem] font-medium transition-colors duration-150 ${
+                                isActive ? "text-white" : "text-white/50 group-hover:text-white/80"
+                              }`}>
+                                {m.title}
+                              </span>
+                              {m.ai && (
+                                <span className="shrink-0 inline-flex items-center gap-0.5 rounded-full bg-violet-500/15 px-1.5 py-0.5 text-[0.52rem] font-bold tracking-wide text-violet-400 border border-violet-500/25">
+                                  <Sparkles className="h-2 w-2" />AI
+                                </span>
+                              )}
+                            </div>
+
+                            {/* Chevron */}
+                            <span className={`shrink-0 text-sm leading-none transition-all duration-200 ${
+                              isActive ? groupCol.text : "text-white/15 group-hover:text-white/35"
+                            }`}>›</span>
+                          </motion.button>
+                        )
+                      })}
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* Right: detail panel */}
+            <div className="min-w-0 flex-1 lg:sticky lg:top-24">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={sel.id}
+                  initial={{ opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                  className="overflow-hidden rounded-2xl border border-white/[0.10] bg-white/[0.025]"
+                >
+                  {/* Detail header */}
+                  <div className="border-b border-white/[0.07] bg-white/[0.02] p-6">
+                    <div className="flex items-start gap-4">
+                      <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border ${selCol.border} ${selCol.bg}`}>
+                        <SelIcon className={`h-5 w-5 ${selCol.text}`} />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <h3 className="text-lg font-bold text-white">{sel.title}</h3>
+                          {sel.ai && (
+                            <span className="inline-flex items-center gap-1 rounded-full bg-violet-500/15 px-2 py-0.5 text-[0.62rem] font-bold tracking-wide text-violet-400 border border-violet-500/25">
+                              <Sparkles className="h-2.5 w-2.5" />AI
                             </span>
                           )}
+                          <span className={`rounded-md border px-2 py-0.5 text-[0.62rem] font-semibold tracking-wider uppercase ${selCol.bg} ${selCol.text} ${selCol.border}`}>
+                            {sel.category}
+                          </span>
                         </div>
-
-                        {/* Chevron */}
-                        <span className={`shrink-0 text-sm leading-none transition-all duration-200 ${
-                          isActive ? groupCol.text : "text-white/15 group-hover:text-white/35"
-                        }`}>›</span>
-                      </motion.button>
-                    )
-                  })}
-                </div>
-              )
-            })}
-          </div>
-        </div>
-
-        {/* Right: detail panel */}
-        <div className="flex-1 min-w-0 lg:sticky lg:top-24">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={sel.id}
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-              className="rounded-2xl border border-white/[0.10] bg-white/[0.025] overflow-hidden"
-            >
-              {/* Detail header */}
-              <div className="p-6 border-b border-white/[0.07] bg-white/[0.02]">
-                <div className="flex items-start gap-4">
-                  <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border ${selCol.border} ${selCol.bg}`}>
-                    <SelIcon className={`h-5 w-5 ${selCol.text}`} />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <h3 className="text-lg font-bold text-white">{sel.title}</h3>
-                      {sel.ai && (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-violet-500/15 px-2 py-0.5 text-[0.62rem] font-bold tracking-wide text-violet-400 border border-violet-500/25">
-                          <Sparkles className="h-2.5 w-2.5" />AI
-                        </span>
-                      )}
-                      <span className={`rounded-md border px-2 py-0.5 text-[0.62rem] font-semibold tracking-wider uppercase ${selCol.bg} ${selCol.text} ${selCol.border}`}>
-                        {sel.category}
-                      </span>
+                        <p className="mt-1.5 text-sm leading-relaxed text-white/55">{sel.subtitle}</p>
+                      </div>
                     </div>
-                    <p className="mt-1.5 text-sm leading-relaxed text-white/55">{sel.subtitle}</p>
+
+                    {/* Who uses */}
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {sel.who.map((w) => (
+                        <span key={w} className="rounded-lg bg-white/[0.04] border border-white/[0.07] px-2.5 py-1 text-[0.68rem] font-medium text-white/45">
+                          {w}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                </div>
 
-                {/* Who uses */}
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {sel.who.map((w) => (
-                    <span key={w} className="rounded-lg bg-white/[0.04] border border-white/[0.07] px-2.5 py-1 text-[0.68rem] font-medium text-white/45">
-                      {w}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Features */}
-              <div className="p-6">
-                <div className="mb-4 text-[0.62rem] font-bold tracking-[0.2em] uppercase text-white/30">
-                  Capabilities
-                </div>
-                {sel.features.length > 0 ? (
-                  <ul className="grid gap-3 sm:grid-cols-2">
-                    {sel.features.map((f, fi) => (
-                      <motion.li
-                        key={fi}
-                        initial={{ opacity: 0, x: -6 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.2, delay: fi * 0.04 }}
-                        className="flex items-start gap-2.5 text-sm leading-relaxed text-white/65"
-                      >
-                        <CheckCircle2 className={`mt-0.5 h-4 w-4 shrink-0 ${selCol.text}`} />
-                        {f}
-                      </motion.li>
-                    ))}
-                  </ul>
-                ) : (
-                  <div className="flex items-center gap-2 text-[0.72rem] text-violet-400/70">
-                    <Sparkles className="h-3.5 w-3.5" />
-                    AI-powered — capabilities coming soon
+                  {/* Features */}
+                  <div className="p-6">
+                    <div className="mb-4 text-[0.62rem] font-bold tracking-[0.2em] uppercase text-white/30">
+                      Capabilities
+                    </div>
+                    {sel.features.length > 0 ? (
+                      <ul className="grid gap-3 sm:grid-cols-2">
+                        {sel.features.map((f, fi) => (
+                          <motion.li
+                            key={fi}
+                            initial={{ opacity: 0, x: -6 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.2, delay: fi * 0.04 }}
+                            className="flex items-start gap-2.5 text-sm leading-relaxed text-white/65"
+                          >
+                            <CheckCircle2 className={`mt-0.5 h-4 w-4 shrink-0 ${selCol.text}`} />
+                            {f}
+                          </motion.li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <div className="flex items-center gap-2 text-[0.72rem] text-violet-400/70">
+                        <Sparkles className="h-3.5 w-3.5" />
+                        AI-powered — capabilities coming soon
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-      </div>
-
-      {/* Bottom CTA strip */}
-      <div className="mt-8 rounded-2xl border border-emerald-500/20 bg-emerald-950/40 p-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <div className="text-[0.72rem] font-semibold tracking-[0.2em] uppercase text-emerald-400">
-            Modular by design
+                </motion.div>
+              </AnimatePresence>
+            </div>
           </div>
-          <p className="mt-1 text-sm text-white/65">
-            Deploy one module or all eighteen. Every module works standalone and integrates seamlessly when you expand.
-          </p>
+
+          {/* Bottom CTA strip */}
+          <div className="mt-8 flex flex-col gap-4 rounded-2xl border border-emerald-500/20 bg-emerald-950/40 p-8 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <div className="text-[0.72rem] font-semibold tracking-[0.2em] uppercase text-emerald-400">
+                Modular by design
+              </div>
+              <p className="mt-1 text-sm text-white/65">
+                Deploy one module or all eighteen. Every module works standalone and integrates seamlessly when you expand.
+              </p>
+            </div>
+            <a
+              href="/contact"
+              className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-emerald-500/40 bg-emerald-500/10 px-6 py-3 text-xs font-semibold tracking-widest uppercase text-emerald-400 transition-all hover:border-emerald-500 hover:bg-emerald-500 hover:text-white"
+            >
+              Get a walkthrough
+              <ArrowUpRight className="h-3.5 w-3.5" />
+            </a>
+          </div>
         </div>
-        <a
-          href="/contact"
-          className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-emerald-500/40 bg-emerald-500/10 px-6 py-3 text-xs font-semibold tracking-widest uppercase text-emerald-400 transition-all hover:bg-emerald-500 hover:text-white hover:border-emerald-500"
-        >
-          Get a walkthrough
-          <ArrowUpRight className="h-3.5 w-3.5" />
-        </a>
       </div>
-    </div>
+    </section>
   )
 }

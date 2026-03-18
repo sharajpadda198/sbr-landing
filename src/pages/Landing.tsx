@@ -5,8 +5,8 @@ import { LandingNav } from "../components/landing/LandingNav"
 import { Hero } from "../components/landing/Hero"
 import { BentoFeatures } from "../components/landing/BentoFeatures"
 import { SplitFeatures } from "../components/landing/SplitFeatures"
-import { SocialProof } from "../components/landing/SocialProof"
-import { PricingSection } from "../components/landing/PricingSection"
+import { WhatYouGet } from "../components/landing/WhatYouGet"
+import { WhoBuiltFor } from "../components/landing/WhoBuiltFor"
 import { FAQ } from "../components/landing/FAQ"
 import { FinalCTA } from "../components/landing/FinalCTA"
 import { Footer } from "../components/landing/Footer"
@@ -41,8 +41,8 @@ export default function LandingPage() {
             <Hero />
             <BentoFeatures />
             <SplitFeatures />
-            <SocialProof />
-            <PricingSection />
+            <WhatYouGet />
+            <WhoBuiltFor />
             <FAQ />
             <FinalCTA />
           </>

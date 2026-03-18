@@ -2,8 +2,6 @@ import { useState } from "react"
 import { motion } from "framer-motion"
 import { LandingNav } from "../components/landing/LandingNav"
 import { ModulesGrid } from "../components/landing/ModulesGrid"
-import { RoleTabs } from "../components/landing/RoleTabs"
-import { ServicesDetail } from "../components/landing/ServicesDetail"
 import { Footer } from "../components/landing/Footer"
 import {
   Sparkles, Users, Sprout, Navigation, Scale, UserCog,
@@ -21,8 +19,6 @@ const SERVICE_AREAS = [
 
 const NAV_SECTIONS = [
   { id: "modules",   label: "All Modules" },
-  { id: "roles",     label: "By Role" },
-  { id: "services",  label: "Services" },
 ]
 
 export default function ModulesPage() {
@@ -154,21 +150,6 @@ export default function ModulesPage() {
           </div>
           <ModulesGrid />
         </section>
-
-        {/* By Role */}
-        <section id="roles" className="border-t border-white/[0.06] mx-auto max-w-7xl px-6 py-20 lg:px-10">
-          <div className="mb-10">
-            <div className="mb-2 text-[0.65rem] font-semibold tracking-[0.22em] uppercase text-white/30">02</div>
-            <h2 className="text-2xl font-bold text-white">By Role</h2>
-            <p className="mt-1.5 text-sm text-white/50">What does Zenithra look like for each person on your team?</p>
-          </div>
-          <RoleTabs />
-        </section>
-
-        {/* Services */}
-        <div className="border-t border-white/[0.06]">
-          <ServicesDetail />
-        </div>
       </main>
 
       <Footer />

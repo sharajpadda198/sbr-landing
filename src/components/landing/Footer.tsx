@@ -5,7 +5,6 @@ import { ArrowRight, Leaf, Mail, Phone } from "lucide-react"
 const navLinks = [
   { label: "Modules",   to: "/modules"   },
   { label: "Workflows", to: "/workflows" },
-  { label: "Pricing",   to: "/pricing"   },
   { label: "Blog",      to: "/blog"      },
   { label: "Contact",   to: "/contact"   },
 ]

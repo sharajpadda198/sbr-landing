@@ -8,44 +8,62 @@ const POINT_4_IMG = new URL("../../assets/point_4.jpg", import.meta.url).href
 const POINT_5_IMG = new URL("../../assets/point_5.jpg", import.meta.url).href
 const POINT_6_IMG = new URL("../../assets/point_6.avif", import.meta.url).href
 
-const points = [
+const FAILURES = [
   {
-    id: "hidden-costs",
-    title: "Hidden Costs",
-    desc: "Operational costs consistently exceed estimates — without clear visibility on why",
+    number: "01",
+    title: "Hidden costs",
+    body: "Operational costs consistently exceed estimates — without clear visibility on why.",
     imageUrl: POINT_1_IMG,
   },
   {
-    id: "output-gap",
-    title: "Output Gap",
-    desc: "Feedstock input doesn’t translate into expected biogas output — and the gap remains unexplained",
+    number: "02",
+    title: "Output gap",
+    body: "Feedstock input doesn’t translate into expected biogas output — and the gap remains unexplained.",
     imageUrl: POINT_2_IMG,
   },
   {
-    id: "no-ground-data",
-    title: "No Ground Data",
-    desc: "No reliable, real-time data from ground-level operations",
+    number: "03",
+    title: "No ground data",
+    body: "No reliable, real-time data from ground-level operations.",
     imageUrl: POINT_3_IMG,
   },
   {
-    id: "manual-operations",
-    title: "Manual Operations",
-    desc: "Critical workflows are still handled manually — leading to errors, delays, and inefficiencies",
+    number: "04",
+    title: "Manual operations",
+    body: "Critical workflows are still handled manually — leading to errors, delays, and inefficiencies.",
     imageUrl: POINT_4_IMG,
   },
   {
-    id: "unstable-supply",
-    title: "Unstable Supply",
-    desc: "Feedstock availability is unpredictable — driven by climate, seasonality, and market fluctuations",
+    number: "05",
+    title: "Unstable supply",
+    body: "Feedstock availability is unpredictable — driven by climate, seasonality, and market fluctuations.",
     imageUrl: POINT_5_IMG,
   },
   {
-    id: "no-central-control",
-    title: "No Central Control 🔥",
-    desc: "No centralized system connects ground operations to decision-making",
+    number: "06",
+    title: "No central control",
+    body: "No centralized system connects ground operations to decision-making.",
     imageUrl: POINT_6_IMG,
   },
-]
+] as const
+
+const FAILURE_LAYOUT = [
+  "lg:col-span-4 lg:row-span-2",
+  "lg:col-span-2 lg:row-span-1",
+  "lg:col-span-2 lg:row-span-1",
+  "lg:col-span-3 lg:row-span-1",
+  "lg:col-span-3 lg:row-span-2",
+  "lg:col-span-3 lg:row-span-1",
+] as const
+
+const FAILURE_REVEAL = [
+  { x: -60, y: 0 },
+  { x: 60, y: 0 },
+  { x: 0, y: -60 },
+  { x: 0, y: 60 },
+  { x: 42, y: 42 },
+  { x: -42, y: 42 },
+] as const
 
 export function BentoFeatures() {
   const sectionRef = useRef<HTMLElement | null>(null)
@@ -74,39 +92,49 @@ export function BentoFeatures() {
           >
             Why Most CBG System Fails
           </motion.h2>
-          <p className="mx-auto mt-4 max-w-xl text-[0.95rem] leading-relaxed text-white/70">
-            Six recurring breakdowns that quietly kill performance — even in well-funded plants.
-          </p>
+
+       
         </motion.div>
 
-        {/* Bento grid */}
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-          {points.map((point, i) => (
+        {/* Breakdown grid */}
+        <div className="mt-10 grid grid-cols-1 gap-4 auto-rows-[260px] sm:grid-cols-2 sm:auto-rows-[240px] lg:grid-cols-6 lg:auto-rows-[220px]">
+          {FAILURES.map((item, i) => (
             <motion.div
-              key={point.id}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.07 }}
-              className="group relative h-48 overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.025] transition-all duration-300 hover:border-white/[0.14] hover:bg-white/[0.04]"
+              key={item.number}
+              initial={{ opacity: 0, scale: 0.96, ...(FAILURE_REVEAL[i] ?? { x: 0, y: 18 }) }}
+              whileInView={{ opacity: 1, x: 0, y: 0, scale: 1 }}
+              whileHover={{ y: -4 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.65, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
+              className={`group relative h-full min-h-[260px] overflow-hidden rounded-2xl border border-white/8 bg-white/5 transition-all duration-300 hover:border-white/15 sm:min-h-[240px] ${FAILURE_LAYOUT[i] ?? ""}`}
             >
+              {/* Full-bleed image */}
               <img
-                src={point.imageUrl}
-                alt={point.title}
-                className="absolute inset-0 z-0 h-full w-full object-cover"
+                src={item.imageUrl}
+                alt={item.title}
+                className="absolute inset-0 h-full w-full object-cover"
                 loading="lazy"
                 decoding="async"
+                draggable={false}
               />
 
-              {/* Subtle top glow on hover */}
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+              {/* Bottom gradient for text readability */}
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent" />
 
-              {/* Lower black gradient (for text overlay readability over images) */}
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-32 bg-gradient-to-t from-black/85 via-black/45 to-transparent" />
+              {/* Subtle hover tint */}
+              <div className="pointer-events-none absolute inset-0 bg-black/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-              <div className="relative z-10 flex h-full flex-col justify-end p-4">
-                <h3 className="text-[1rem] font-semibold leading-snug text-white">{point.title}</h3>
-                <p className="mt-1 text-[0.78rem] leading-relaxed text-white/75">{point.desc}</p>
+              {/* Text overlay */}
+              <div className="absolute inset-x-0 bottom-0 p-6">
+                <div className="mb-3 flex items-center justify-between">
+                  <span className="inline-flex items-center gap-2 text-[0.68rem] font-bold tracking-[0.2em] uppercase text-white/60">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--primary))] opacity-80" />
+                    {item.number}
+                  </span>
+                </div>
+
+                <h3 className="text-[1.05rem] font-semibold text-white leading-snug">{item.title}</h3>
+                <p className="mt-2 text-[0.86rem] leading-relaxed text-white/75">{item.body}</p>
               </div>
             </motion.div>
           ))}

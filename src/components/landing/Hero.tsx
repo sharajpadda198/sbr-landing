@@ -8,7 +8,7 @@ const BADGES = [
 ]
 
 const HERO_BG_VIDEO_URL = new URL(
-  "../../assets/vecteezy_distillation-process-is-used-to-produce-bio-gas-at-station_55334021.mov",
+  "../../assets/vecteezy_distillation-process-is-used-to-produce-bio-gas-at-station_55334021.mp4",
   import.meta.url,
 ).href
 
@@ -52,20 +52,20 @@ export function Hero() {
                 className="text-balance font-bold text-white leading-[1.05] tracking-tight"
                 style={{ fontSize: "clamp(2.6rem, 6.5vw, 5.5rem)" }}
               >
-                Run your entire{" "}
+                Bring Your Entire {" "}
                 <span
                   className="bg-clip-text text-transparent"
                   style={{ backgroundImage: "linear-gradient(135deg, #34d399 0%, #10b981 40%, #06b6d4 100%)" }}
                 >
-                  supply chain
+                  CBG Plant
                 </span>
                 <br />
-                without the chaos.
+                Under One Intelligent System
               </h1>
             </div>
 
             <p className="mx-auto max-w-2xl text-[1.05rem] leading-[1.75] text-white/70 lg:mx-0">
-              Zenithra connects every part of your agri supply chain — farmer onboarding, route planning, quality checks, payments, and AI forecasting — in one unified platform.
+              Zenithra connects every part of your CBG plant to cater you the most optimized and cost saving systems .
             </p>
 
             <div className="mt-9 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
@@ -80,7 +80,7 @@ export function Hero() {
                 to="/modules"
                 className="hero-secondary-btn inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/[0.04] px-7 py-3.5 text-[0.88rem] font-medium text-white/60 backdrop-blur-sm transition-all duration-300 hover:border-white/25 hover:text-white"
               >
-                View platform →
+                View Demo →
               </Link>
             </div>
 

@@ -1,8 +1,7 @@
 ﻿import * as React from "react"
 import { Link, useLocation } from "react-router-dom"
-import { Menu, Moon, Sun, X } from "lucide-react"
+import { Menu, X } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
-import { useTheme } from "../../lib/useTheme"
 
 const LOGO_URL = new URL(
   "../../assets/A__2_-removebg-preview.png",
@@ -12,7 +11,6 @@ const LOGO_URL = new URL(
 const NAV_LINKS = [
   { label: "Product",   to: "/modules"   },
   { label: "Workflows", to: "/workflows" },
-  { label: "Pricing",   to: "/pricing"   },
   { label: "Blog",      to: "/blog"      },
 ]
 
@@ -20,7 +18,6 @@ export function LandingNav() {
   const [scrolled, setScrolled] = React.useState(false)
   const [menuOpen, setMenuOpen] = React.useState(false)
   const location = useLocation()
-  const { theme, toggle } = useTheme()
 
   React.useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 56)
@@ -91,25 +88,6 @@ export function LandingNav() {
 
             {/* Desktop CTAs */}
             <div className="hidden items-center gap-2 lg:flex">
-              {/* Theme toggle */}
-              <button
-                type="button"
-                onClick={toggle}
-                aria-label="Toggle light/dark mode"
-                className="nav-theme-btn flex h-9 w-9 items-center justify-center rounded-xl border border-white/[0.09] bg-white/[0.04] text-white/60 transition-all hover:border-white/20 hover:text-white"
-              >
-                <AnimatePresence mode="wait" initial={false}>
-                  {theme === 'dark' ? (
-                    <motion.span key="sun" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.15 }}>
-                      <Sun className="h-4 w-4" />
-                    </motion.span>
-                  ) : (
-                    <motion.span key="moon" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.15 }}>
-                      <Moon className="h-4 w-4" />
-                    </motion.span>
-                  )}
-                </AnimatePresence>
-              </button>
               <Link
                 to="/contact"
                 className="group relative inline-flex items-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 px-5 py-2.5 text-[0.82rem] font-semibold text-white shadow-[0_0_18px_rgba(16,185,129,0.28)] transition-all duration-300 hover:-translate-y-px hover:shadow-[0_0_30px_rgba(16,185,129,0.48)]"
@@ -193,14 +171,6 @@ export function LandingNav() {
                   })}
                 </div>
                 <div className="mx-1 mt-3 border-t border-white/[0.08] pt-3 grid gap-2">
-                  <button
-                    type="button"
-                    onClick={toggle}
-                    className="nav-mobile-toggle-btn flex w-full items-center justify-center gap-2 rounded-xl border border-white/[0.09] bg-white/[0.04] py-3 text-sm font-medium text-white/60 transition-all hover:text-white"
-                  >
-                    {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-                    {theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-                  </button>
                   <Link
                     to="/contact"
                     className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 py-3 text-sm font-semibold text-white shadow-[0_0_20px_rgba(16,185,129,0.25)]"
