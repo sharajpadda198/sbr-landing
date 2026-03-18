@@ -1,0 +1,559 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* ── Surfaces ── */
+    --background:        42 30% 97%;    /* warm off-white like Daylight */
+    --foreground:        30 8% 8%;      /* near-black warm ink */
+    --card:              42 30% 99%;
+    --card-foreground:   30 8% 8%;
+    --popover:           42 30% 99%;
+    --popover-foreground:30 8% 8%;
+
+    /* ── Deep forest green (primary) ── */
+    --primary:           152 48% 18%;
+    --primary-foreground:0 0% 99%;
+    --primary-light:     152 44% 96%;
+
+    /* ── Amber (accent/energy) ── */
+    --energy:            38 92% 48%;
+    --energy-light:      38 92% 96%;
+    --energy-fg:         38 80% 20%;
+
+    /* ── Neutral surfaces ── */
+    --secondary:         42 20% 95%;
+    --secondary-foreground:30 8% 18%;
+    --muted:             42 16% 92%;
+    --muted-foreground:  30 6% 46%;
+    --accent:            152 30% 93%;
+    --accent-foreground: 152 48% 16%;
+
+    --destructive:       0 70% 50%;
+    --destructive-foreground:0 0% 99%;
+
+    --border:            42 16% 88%;
+    --input:             42 16% 88%;
+    --ring:              152 48% 18%;
+    --radius:            14px;
+
+    /* ── Dark bands ── */
+    --ink:               30 10% 5%;
+    --dark-band:         152 28% 8%;
+    --dark-mid:          152 22% 12%;
+    --hero-dark:         30 10% 6%;
+
+    /* ── Amber glow for dark sections ── */
+    --amber-glow:        38 92% 48%;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-feature-settings: "cv02","cv03","cv04","cv11";
+  }
+
+  body {
+    background-color: #030712;
+    color: #ffffff;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    line-height: 1.65;
+  }
+
+  h1, h2, h3, h4 {
+    letter-spacing: -0.03em;
+    line-height: 1.07;
+    font-weight: 700;
+  }
+
+  ::-webkit-scrollbar        { width: 4px; }
+  ::-webkit-scrollbar-track  { background: transparent; }
+  ::-webkit-scrollbar-thumb  {
+    background: hsl(var(--primary) / 0.3);
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: hsl(var(--primary) / 0.55); }
+}
+
+@layer utilities {
+  /* ── Typography ── */
+  .font-display  { font-family: 'Fraunces', Georgia, serif; }
+  .font-serif    { font-family: 'Fraunces', Georgia, serif; }
+  .text-balance  { text-wrap: balance; }
+
+  /* ── Dark cinematic band ── */
+  .dark-band { background: hsl(var(--dark-band)); }
+
+  /* ── Warm section ── */
+  .warm-band { background: hsl(42 30% 93%); }
+
+  /* ── Fine dot grid for light sections ── */
+  .dot-grid {
+    background-image: radial-gradient(circle, hsl(var(--foreground) / 0.08) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  /* ── Fine grid overlay for dark surfaces ── */
+  .grid-overlay {
+    background-image:
+      linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+
+  /* ── Glass surface ── */
+  .glass {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.11);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  /* ── Section eyebrow label ── */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.67rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: hsl(var(--primary));
+  }
+  .eyebrow::before {
+    content: '';
+    display: block;
+    width: 1.5rem;
+    height: 1.5px;
+    background: hsl(var(--primary));
+    flex-shrink: 0;
+  }
+
+  /* ── Amber eyebrow (for dark sections) ── */
+  .eyebrow-amber {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.67rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: hsl(var(--energy));
+  }
+  .eyebrow-amber::before {
+    content: '';
+    display: block;
+    width: 1.5rem;
+    height: 1.5px;
+    background: hsl(var(--energy));
+    flex-shrink: 0;
+  }
+
+  /* ── Amber pill badge ── */
+  .badge-amber {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 0.3rem 0.85rem;
+    border-radius: 999px;
+    background: hsl(var(--energy-light));
+    color: hsl(var(--energy-fg));
+    border: 1px solid hsl(var(--energy) / 0.25);
+  }
+
+  /* ── Green pill badge ── */
+  .badge-green {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 0.3rem 0.85rem;
+    border-radius: 999px;
+    background: hsl(var(--primary-light));
+    color: hsl(var(--primary));
+    border: 1px solid hsl(var(--primary) / 0.2);
+  }
+
+  /* ── Marquee ── */
+  @keyframes marquee {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee 32s linear infinite;
+  }
+  .marquee-track:hover { animation-play-state: paused; }
+
+  /* ── Fade up ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Shimmer sweep ── */
+  @keyframes shimmer {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  /* ── Pulse ring ── */
+  @keyframes pulseRing {
+    0%   { transform: scale(1); opacity: 0.5; }
+    100% { transform: scale(2.1); opacity: 0; }
+  }
+
+  /* ── Float ── */
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50%       { transform: translateY(-8px); }
+  }
+  .float { animation: float 4s ease-in-out infinite; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   LIGHT-MODE OVERRIDES
+   Plain CSS (outside @layer) so it naturally cascades above Tailwind utilities.
+   Activated when the <html> element carries the class "light".
+   ══════════════════════════════════════════════════════════════════════════ */
+
+html.light body {
+  background-color: #f4f7f4;
+  color: #0c1a0e;
+}
+
+/* ─── Page / hard-coded section backgrounds ──────────────────────────────── */
+html.light .bg-\[\#030712\]    { background-color: #f4f7f4 !important; }
+html.light .bg-\[\#030712\]\/90 { background-color: rgba(244,247,244,0.93) !important; }
+html.light .bg-\[\#040f08\]    { background-color: #eaf0ea !important; }
+html.light .bg-\[\#050d07\]    { background-color: #ebf0eb !important; }
+html.light .bg-\[\#070f09\]    { background-color: #eef2ee !important; }
+html.light .bg-\[\#0a0f1a\]\/85 { background-color: rgba(255,255,255,0.92) !important; }
+html.light .bg-\[\#0c1220\]\/95 { background-color: rgba(244,247,244,0.97) !important; }
+html.light .bg-\[\#0a1a10\]   { background-color: #edf5ed !important; }
+html.light .bg-\[\#0a1510\]   { background-color: #f0f5f0 !important; }
+html.light .bg-\[\#0d1a12\]   { background-color: #ecf4ec !important; }
+
+/* ── CSS-var dark bands → light equivalents ─────────────────────────────── */
+html.light {
+  --dark-band: 140 18% 92%;
+  --dark-mid:  140 14% 95%;
+  --hero-dark: 140 18% 94%;
+  --ink:       140 8% 96%;
+}
+
+/* ── Mockup widget dark-backgrounds → light neutral ─────────────────────── */
+html.light [style*="background: linear-gradient(145deg,#0d1a12"],
+html.light [style*="background:linear-gradient(145deg,#0d1a12"] {
+  background: linear-gradient(145deg, #f0f5f0 0%, #eaf2ea 100%) !important;
+}
+
+/* ── Subtle surface tints (card backs) ──────────────────────────────────── */
+html.light .bg-white\/\[0\.015\] { background-color: rgba(12,58,14,0.025) !important; }
+html.light .bg-white\/\[0\.02\]  { background-color: rgba(12,58,14,0.030) !important; }
+html.light .bg-white\/\[0\.025\] { background-color: rgba(12,58,14,0.035) !important; }
+html.light .bg-white\/\[0\.03\]  { background-color: rgba(12,58,14,0.045) !important; }
+html.light .bg-white\/\[0\.04\]  { background-color: rgba(12,58,14,0.055) !important; }
+html.light .bg-white\/\[0\.05\]  { background-color: rgba(12,58,14,0.065) !important; }
+html.light .bg-white\/\[0\.06\]  { background-color: rgba(12,58,14,0.075) !important; }
+html.light .bg-white\/\[0\.07\]  { background-color: rgba(12,58,14,0.085) !important; }
+html.light .bg-white\/\[0\.08\]  { background-color: rgba(12,58,14,0.095) !important; }
+html.light .bg-white\/\[0\.10\]  { background-color: rgba(12,58,14,0.105) !important; }
+html.light .bg-white\/5   { background-color: rgba(12,58,14,0.055) !important; }
+html.light .bg-white\/10  { background-color: rgba(12,58,14,0.09) !important; }
+html.light .bg-black\/50  { background-color: rgba(255,255,255,0.75) !important; }
+html.light .bg-black\/60  { background-color: rgba(244,247,244,0.75) !important; }
+
+/* ── emerald-950 / emerald-900 tints used in mockups ────────────────────── */
+html.light .bg-emerald-950\/20 { background-color: rgba(4,120,87,0.06) !important; }
+html.light .bg-emerald-950\/40 { background-color: rgba(4,120,87,0.09) !important; }
+html.light .bg-emerald-950\/60 { background-color: rgba(4,120,87,0.10) !important; }
+html.light .bg-emerald-900\/20 { background-color: rgba(4,120,87,0.07) !important; }
+html.light .bg-black\/20       { background-color: rgba(12,58,14,0.04) !important; }
+html.light .bg-black\/30       { background-color: rgba(12,58,14,0.06) !important; }
+
+/* ── Borders ─────────────────────────────────────────────────────────────── */
+html.light .border-white\/\[0\.05\]  { border-color: rgba(12,58,14,0.08) !important; }
+html.light .border-white\/\[0\.06\]  { border-color: rgba(12,58,14,0.09) !important; }
+html.light .border-white\/\[0\.07\]  { border-color: rgba(12,58,14,0.11) !important; }
+html.light .border-white\/\[0\.08\]  { border-color: rgba(12,58,14,0.12) !important; }
+html.light .border-white\/\[0\.09\]  { border-color: rgba(12,58,14,0.13) !important; }
+html.light .border-white\/\[0\.10\]  { border-color: rgba(12,58,14,0.14) !important; }
+html.light .border-white\/\[0\.12\]  { border-color: rgba(12,58,14,0.16) !important; }
+html.light .border-white\/10         { border-color: rgba(12,58,14,0.13) !important; }
+html.light .border-white\/15         { border-color: rgba(12,58,14,0.17) !important; }
+html.light .border-white\/20         { border-color: rgba(12,58,14,0.20) !important; }
+html.light .border-white\/30         { border-color: rgba(12,58,14,0.26) !important; }
+
+/* ── Text: white → dark-green equivalents ────────────────────────────────── */
+html.light .text-white     { color: #0c1a0e !important; }
+html.light .text-white\/80 { color: rgba(12,26,14,0.80) !important; }
+html.light .text-white\/70 { color: rgba(12,26,14,0.70) !important; }
+html.light .text-white\/65 { color: rgba(12,26,14,0.65) !important; }
+html.light .text-white\/60 { color: rgba(12,26,14,0.60) !important; }
+html.light .text-white\/55 { color: rgba(12,26,14,0.55) !important; }
+html.light .text-white\/50 { color: rgba(12,26,14,0.50) !important; }
+html.light .text-white\/45 { color: rgba(12,26,14,0.45) !important; }
+html.light .text-white\/40 { color: rgba(12,26,14,0.40) !important; }
+html.light .text-white\/35 { color: rgba(12,26,14,0.35) !important; }
+html.light .text-white\/30 { color: rgba(12,26,14,0.30) !important; }
+html.light .text-white\/25 { color: rgba(12,26,14,0.25) !important; }
+html.light .text-white\/20 { color: rgba(12,26,14,0.20) !important; }
+html.light .text-white\/15 { color: rgba(12,26,14,0.15) !important; }
+html.light .text-white\/12 { color: rgba(12,26,14,0.12) !important; }
+html.light .text-white\/10 { color: rgba(12,26,14,0.10) !important; }
+
+/* ── Gradient headings: white→white/60 → solid dark text ──────────────── */
+html.light .text-transparent:not([class*="from-emerald"]):not([class*="from-cyan"]):not([class*="from-lime"]):not([class*="from-teal"]) {
+  color: #0c1a0e !important;
+  -webkit-text-fill-color: #0c1a0e !important;
+  background-image: none !important;
+}
+
+/* ── Divide lines ────────────────────────────────────────────────────────── */
+html.light .divide-white\/8 > * + * { border-color: rgba(12,58,14,0.10) !important; }
+
+/* ── Input / form fields ─────────────────────────────────────────────────── */
+html.light input,
+html.light textarea {
+  background-color: rgba(12,26,14,0.04) !important;
+  color: #0c1a0e !important;
+  border-color: rgba(12,26,14,0.14) !important;
+}
+html.light input::placeholder,
+html.light textarea::placeholder {
+  color: rgba(12,26,14,0.35) !important;
+}
+
+/* ── glass utility ───────────────────────────────────────────────────────── */
+html.light .glass {
+  background: rgba(255,255,255,0.70) !important;
+  border-color: rgba(12,58,14,0.12) !important;
+}
+
+/* ── Scrollbar ───────────────────────────────────────────────────────────── */
+html.light ::-webkit-scrollbar-thumb {
+  background: rgba(12,26,14,0.18);
+}
+html.light ::-webkit-scrollbar-thumb:hover {
+  background: rgba(12,26,14,0.32);
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   COMPONENT-LEVEL LIGHT OVERRIDES
+   Applied by component class hooks added to JSX.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── LandingNav ─────────────────────────────────────────────────────────── */
+html.light .nav-scrolled-pill {
+  background-color: rgba(255,255,255,0.90) !important;
+  border-color: rgba(12,58,14,0.10) !important;
+  box-shadow: 0 8px 32px rgba(12,26,14,0.10) !important;
+}
+html.light .nav-mobile-drawer {
+  background-color: rgba(244,247,244,0.97) !important;
+  border-color: rgba(12,58,14,0.10) !important;
+}
+html.light .nav-active-link {
+  background-color: rgba(4,120,87,0.08) !important;
+  color: #0c1a0e !important;
+}
+html.light .nav-inactive-link:hover {
+  background-color: rgba(4,120,87,0.05) !important;
+}
+html.light .nav-theme-btn,
+html.light .nav-burger-btn {
+  border-color: rgba(12,58,14,0.12) !important;
+  background-color: rgba(12,58,14,0.04) !important;
+  color: rgba(12,26,14,0.55) !important;
+}
+html.light .nav-theme-btn:hover,
+html.light .nav-burger-btn:hover {
+  border-color: rgba(12,58,14,0.22) !important;
+  color: #0c1a0e !important;
+}
+html.light .nav-mobile-toggle-btn {
+  border-color: rgba(12,58,14,0.12) !important;
+  background-color: rgba(12,58,14,0.04) !important;
+  color: rgba(12,26,14,0.55) !important;
+}
+
+/* ── Hero section ───────────────────────────────────────────────────────── */
+html.light .hero-section {
+  background-color: #f4f7f4 !important;
+}
+html.light .hero-bottom-fade {
+  background: linear-gradient(to top, #f4f7f4, transparent) !important;
+}
+html.light .hero-dot-grid {
+  opacity: 0.18 !important;
+}
+html.light .hero-top-glow {
+  opacity: 0.10 !important;
+}
+html.light .hero-mockup-glow {
+  opacity: 0.12 !important;
+}
+html.light .hero-badge {
+  background-color: rgba(4,120,87,0.06) !important;
+  border-color: rgba(4,120,87,0.18) !important;
+}
+html.light .hero-secondary-btn {
+  border-color: rgba(12,58,14,0.18) !important;
+  background-color: rgba(12,58,14,0.04) !important;
+  color: rgba(12,26,14,0.65) !important;
+}
+html.light .hero-secondary-btn:hover {
+  border-color: rgba(12,58,14,0.32) !important;
+  color: #0c1a0e !important;
+}
+
+/* ── Trust badges (colored pills in Hero) ─────────────────────────────────*/
+html.light .badge-trust-emerald {
+  background-color: rgba(4,120,87,0.07) !important;
+  border-color: rgba(4,120,87,0.22) !important;
+  color: hsl(152 48% 22%) !important;
+}
+html.light .badge-trust-sky {
+  background-color: rgba(14,165,233,0.07) !important;
+  border-color: rgba(14,165,233,0.22) !important;
+  color: hsl(199 89% 28%) !important;
+}
+html.light .badge-trust-violet {
+  background-color: rgba(124,58,237,0.07) !important;
+  border-color: rgba(124,58,237,0.22) !important;
+  color: hsl(262 80% 34%) !important;
+}
+
+/* ── ProductMockup (inside Hero) ─────────────────────────────────────────── */
+html.light .product-mockup-root {
+  background: linear-gradient(145deg, #edf5ed 0%, #e8f2e8 100%) !important;
+  border-color: rgba(12,58,14,0.10) !important;
+}
+
+/* ── ConnectBand section ────────────────────────────────────────────────── */
+html.light .connect-band-section {
+  background-color: #eaf0ea !important;
+}
+
+/* ── LogoBand section ───────────────────────────────────────────────────── */
+html.light .logo-band-section {
+  background-color: rgba(12,58,14,0.025) !important;
+  border-color: rgba(12,58,14,0.08) !important;
+}
+
+/* ── StatsBand section ──────────────────────────────────────────────────── */
+html.light .stats-band-section {
+  background-color: #e8efea !important;
+}
+html.light .stats-band-cell:hover {
+  background-color: rgba(4,120,87,0.04) !important;
+}
+
+/* ── BentoFeatures section ───────────────────────────────────────────────── */
+html.light .bento-section {
+  background-color: #f4f7f4 !important;
+}
+html.light .bento-promo-card {
+  background: linear-gradient(135deg, rgba(4,120,87,0.06) 0%, rgba(20,184,166,0.04) 100%) !important;
+  border-color: rgba(4,120,87,0.18) !important;
+}
+
+/* ── SplitFeatures: forecast & mobile mockup wrappers ────────────────────── */
+html.light .split-forecast-mockup {
+  background-color: #edf5ed !important;
+  border-color: rgba(12,58,14,0.10) !important;
+}
+html.light .split-mobile-mockup {
+  background-color: #edf5ed !important;
+  border-color: rgba(12,58,14,0.10) !important;
+}
+html.light .split-mobile-inner {
+  background-color: #edf5ed !important;
+  border-color: rgba(12,58,14,0.10) !important;
+}
+html.light .split-map-area {
+  background-color: rgba(4,120,87,0.05) !important;
+  border-color: rgba(12,58,14,0.10) !important;
+}
+html.light .split-pickup-item {
+  background-color: rgba(12,58,14,0.04) !important;
+  border-color: rgba(12,58,14,0.09) !important;
+}
+
+/* ── FAQ section ─────────────────────────────────────────────────────────── */
+html.light .faq-section {
+  background-color: #f4f7f4 !important;
+}
+html.light .faq-accordion-panel {
+  background-color: rgba(12,58,14,0.03) !important;
+  border-color: rgba(12,58,14,0.09) !important;
+}
+html.light .faq-item-divider {
+  border-color: rgba(12,58,14,0.09) !important;
+}
+html.light .faq-question-text {
+  color: #0c1a0e !important;
+}
+html.light .faq-answer-text {
+  color: rgba(12,26,14,0.55) !important;
+}
+html.light .faq-pill-inactive {
+  border-color: rgba(12,58,14,0.16) !important;
+  color: rgba(12,26,14,0.45) !important;
+}
+html.light .faq-pill-inactive:hover {
+  border-color: rgba(4,120,87,0.35) !important;
+  color: hsl(152 48% 22%) !important;
+}
+
+/* ── FinalCTA section ────────────────────────────────────────────────────── */
+html.light .final-cta-section {
+  background-color: #f4f7f4 !important;
+}
+html.light .final-cta-vignette {
+  background: radial-gradient(ellipse 80% 80% at 50% 50%, transparent 30%, #f4f7f4 100%) !important;
+}
+html.light .final-cta-secondary-btn {
+  border-color: rgba(12,58,14,0.18) !important;
+  background-color: rgba(12,58,14,0.04) !important;
+  color: rgba(12,26,14,0.70) !important;
+}
+html.light .final-cta-secondary-btn:hover {
+  border-color: rgba(12,58,14,0.32) !important;
+  color: #0c1a0e !important;
+}
+
+/* ── Footer ──────────────────────────────────────────────────────────────── */
+html.light .footer-root {
+  background-color: #e8ede8 !important;
+  color: #0c1a0e !important;
+  border-color: rgba(12,58,14,0.10) !important;
+}
+html.light .footer-cta-band {
+  border-color: rgba(12,58,14,0.10) !important;
+}
+html.light .footer-grid-border {
+  border-color: rgba(12,58,14,0.10) !important;
+}
+html.light .footer-secondary-btn {
+  border-color: rgba(12,58,14,0.18) !important;
+  background-color: rgba(12,58,14,0.05) !important;
+  color: rgba(12,26,14,0.65) !important;
+}
+html.light .footer-secondary-btn:hover {
+  border-color: rgba(12,58,14,0.32) !important;
+  background-color: rgba(12,58,14,0.09) !important;
+  color: #0c1a0e !important;
+}
+html.light .footer-urgency-badge {
+  background-color: rgba(4,120,87,0.08) !important;
+  border-color: rgba(4,120,87,0.25) !important;
+}
