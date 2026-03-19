@@ -8,8 +8,8 @@ const audiences = [
 		icon: Factory,
 		title: "Bio-CNG plant operators",
 		desc: "Manage feedstock procurement, intake logistics, and plant utilisation with full visibility from farm to gate.",
-		cta: "Plant workflows",
-		to: "/workflows",
+		cta: "Meet the team",
+		to: "/team",
 	},
 	{
 		icon: Building2,

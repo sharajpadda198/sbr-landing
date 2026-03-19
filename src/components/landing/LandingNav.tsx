@@ -10,7 +10,7 @@ const LOGO_URL = new URL(
 
 const NAV_LINKS = [
   { label: "Product",   to: "/modules"   },
-  { label: "Workflows", to: "/workflows" },
+  { label: "Team",      to: "/team"      },
   { label: "Blog",      to: "/blog"      },
 ]
 

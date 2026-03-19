@@ -226,10 +226,10 @@ export function NewWayTo() {
                 ))}
               </ul>
               <a
-                href="/workflows"
+                href="/team"
                 className="mt-8 inline-flex items-center gap-2 text-[0.82rem] font-semibold text-emerald-400 hover:text-emerald-300 transition-colors"
               >
-                See full workflow <ArrowRight className="h-4 w-4" />
+                Meet the team <ArrowRight className="h-4 w-4" />
               </a>
             </div>
 

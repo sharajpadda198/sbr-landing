@@ -47,13 +47,13 @@ export function FinalCTA() {
           className="font-bold text-white leading-tight tracking-tight"
           style={{ fontSize: "clamp(2.4rem, 6vw, 5rem)" }}
         >
-          Your supply chain,
+          Make your CBG plant's operations
           <br />
           <span
             className="bg-clip-text text-transparent"
             style={{ backgroundImage: "linear-gradient(135deg, #34d399 0%, #10b981 40%, #06b6d4 100%)" }}
           >
-            finally under control.
+            seamless and efficient.
           </span>
         </motion.h2>
 
@@ -99,17 +99,7 @@ export function FinalCTA() {
           transition={{ duration: 0.6, delay: 0.5 }}
           className="mt-14 flex flex-wrap items-center justify-center gap-10"
         >
-          {[
-            { v: "50,000+", l: "Farmers managed" },
-            { v: "?40 Cr+", l: "Payments processed" },
-            { v: "14 days", l: "Go-live guarantee" },
-            { v: "99.9%",   l: "Platform uptime" },
-          ].map((s) => (
-            <div key={s.l} className="text-center">
-              <div className="text-2xl font-bold text-white">{s.v}</div>
-              <div className="mt-1 text-[0.65rem] font-medium tracking-wide text-white/55">{s.l}</div>
-            </div>
-          ))}
+         
         </motion.div>
       </div>
     </section>

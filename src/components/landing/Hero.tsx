@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react"
 import { Link } from "react-router-dom"
 import { ArrowRight } from "lucide-react"
 
@@ -8,20 +9,49 @@ const BADGES = [
 ]
 
 const HERO_BG_VIDEO_URL = new URL(
-  "../../assets/vecteezy_distillation-process-is-used-to-produce-bio-gas-at-station_55334021.mp4",
+  "../../assets/background.mp4",
   import.meta.url,
 ).href
 
 export function Hero() {
+  const sectionRef = useRef<HTMLElement | null>(null)
+  const videoRef = useRef<HTMLVideoElement | null>(null)
+
+  useEffect(() => {
+    const sectionEl = sectionRef.current
+    const videoEl = videoRef.current
+    if (!sectionEl || !videoEl) return
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0]
+        if (!entry) return
+
+        if (entry.isIntersecting) {
+          // Resume when visible.
+          void videoEl.play().catch(() => {})
+        } else {
+          // Pause when offscreen to free GPU/CPU.
+          videoEl.pause()
+        }
+      },
+      { threshold: 0.15 },
+    )
+
+    io.observe(sectionEl)
+    return () => io.disconnect()
+  }, [])
+
   return (
-    <section className="hero-section relative" aria-label="Hero">
+    <section ref={sectionRef} className="hero-section relative" aria-label="Hero">
       <div className="relative min-h-[100svh] overflow-hidden">
         <video
+          ref={videoRef}
           className="absolute inset-0 h-full w-full object-cover"
           autoPlay
           muted
           playsInline
-          preload="auto"
+          preload="metadata"
           aria-hidden="true"
         >
           {/* Avoid setting a restrictive `type` here; some browsers will skip QuickTime sources entirely. */}

@@ -145,10 +145,10 @@ export function HowItWorks() {
 					className="mt-16 flex justify-center"
 				>
 					<button
-						onClick={() => navigate("/workflows")}
+						onClick={() => navigate("/team")}
 						className="rounded-full bg-[hsl(var(--primary))] px-9 py-4 text-[0.72rem] font-bold tracking-[0.15em] uppercase text-white transition-all hover:-translate-y-0.5 hover:bg-[hsl(152_52%_16%)] hover:shadow-lg hover:shadow-[hsl(var(--primary)/0.3)]"
 					>
-						See Full Workflow
+						Meet The Team
 					</button>
 				</motion.div>
 			</div>

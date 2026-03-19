@@ -8,7 +8,6 @@ import { SplitFeatures } from "../components/landing/SplitFeatures"
 import { WhatYouGet } from "../components/landing/WhatYouGet"
 import { WhoBuiltFor } from "../components/landing/WhoBuiltFor"
 import { FAQ } from "../components/landing/FAQ"
-import { FinalCTA } from "../components/landing/FinalCTA"
 import { Footer } from "../components/landing/Footer"
 import { ParticleField } from "../components/ParticleField"
 
@@ -44,7 +43,6 @@ export default function LandingPage() {
             <WhatYouGet />
             <WhoBuiltFor />
             <FAQ />
-            <FinalCTA />
           </>
         )}
       </main>

@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 
 import HomePage      from './pages/Landing'
 import ModulesPage   from './pages/Modules'
-import WorkflowsPage from './pages/Workflows'
+import TeamPage      from './pages/Team'
 import BlogPage      from './pages/Blog'
 import ContactPage   from './pages/Contact'
 import FAQPage       from './pages/FAQPage'
@@ -14,7 +14,8 @@ function App() {
     <Routes>
       <Route path="/"          element={<HomePage />} />
       <Route path="/modules"   element={<ModulesPage />} />
-      <Route path="/workflows" element={<WorkflowsPage />} />
+      <Route path="/team"      element={<TeamPage />} />
+      <Route path="/workflows" element={<Navigate to="/team" replace />} />
       <Route path="/blog"      element={<BlogPage />} />
       <Route path="/contact"   element={<ContactPage />} />
       <Route path="/faq"       element={<FAQPage />} />
