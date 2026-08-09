@@ -3,7 +3,9 @@ import { motion } from "framer-motion"
 import { Calendar, Clock } from "lucide-react"
 
 const CALENDLY_URL = "https://calendly.com/sharajpadda4939/new-meeting"
-const CALENDLY_EMBED_URL = `${CALENDLY_URL}?hide_gdpr_banner=1&background_color=0d1a12&text_color=ffffff&primary_color=2e7d4f`
+/** Light embed so the calendar stays readable on the dark page */
+const CALENDLY_EMBED_URL =
+  `${CALENDLY_URL}?embed_type=Inline&hide_gdpr_banner=1&background_color=ffffff&text_color=1a1a1a&primary_color=2e7d4f`
 const SCRIPT_ID = "calendly-script"
 const STYLE_ID = "calendly-style"
 
@@ -28,6 +30,8 @@ function ensureCalendlyAssets(): Promise<void> {
         return
       }
       existing.addEventListener("load", () => resolve(), { once: true })
+      // If load already fired, don't hang forever
+      window.setTimeout(() => resolve(), 1500)
     })
   }
 
@@ -48,47 +52,10 @@ interface CalendlyEmbedProps {
 }
 
 export function CalendlyEmbed({ mode = "inline" }: CalendlyEmbedProps) {
-  const containerRef = React.useRef<HTMLDivElement>(null)
-
+  // Preload popup assets; inline uses a plain iframe (more reliable than widget.js)
   React.useEffect(() => {
-    if (mode !== "inline") return
-
-    let cancelled = false
-
-    const mountWidget = async () => {
-      try {
-        await ensureCalendlyAssets()
-        if (cancelled || !containerRef.current || !window.Calendly) return
-
-        // Clear any previous iframe so SPA remounts always re-init
-        containerRef.current.innerHTML = ""
-        window.Calendly.initInlineWidget({
-          url: CALENDLY_EMBED_URL,
-          parentElement: containerRef.current,
-        })
-      } catch {
-        // Fallback: open scheduling page in an iframe if the widget script fails
-        if (!cancelled && containerRef.current) {
-          containerRef.current.innerHTML = ""
-          const iframe = document.createElement("iframe")
-          iframe.src = CALENDLY_EMBED_URL
-          iframe.title = "Schedule a meeting"
-          iframe.style.width = "100%"
-          iframe.style.height = "700px"
-          iframe.style.border = "0"
-          containerRef.current.appendChild(iframe)
-        }
-      }
-    }
-
-    void mountWidget()
-
-    const el = containerRef.current
-    return () => {
-      cancelled = true
-      if (el) el.innerHTML = ""
-    }
-  }, [mode])
+    void ensureCalendlyAssets().catch(() => {})
+  }, [])
 
   if (mode === "inline") {
     return (
@@ -98,7 +65,6 @@ export function CalendlyEmbed({ mode = "inline" }: CalendlyEmbedProps) {
         className="bg-[hsl(var(--dark-band))] py-24"
       >
         <div className="mx-auto max-w-5xl px-6 lg:px-10">
-          {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -124,11 +90,12 @@ export function CalendlyEmbed({ mode = "inline" }: CalendlyEmbedProps) {
             </div>
           </motion.div>
 
-          {/* Calendly inline widget — initialized via initInlineWidget */}
-          <div
-            ref={containerRef}
-            className="calendly-inline-widget w-full overflow-hidden rounded-sm"
-            style={{ minWidth: 320, height: 700 }}
+          <iframe
+            src={CALENDLY_EMBED_URL}
+            title="Schedule a meeting"
+            className="w-full overflow-hidden rounded-sm bg-white"
+            style={{ minWidth: 320, height: 700, border: 0 }}
+            loading="lazy"
           />
         </div>
       </section>
