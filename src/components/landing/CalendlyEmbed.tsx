@@ -2,7 +2,45 @@ import * as React from "react"
 import { motion } from "framer-motion"
 import { Calendar, Clock } from "lucide-react"
 
-const CALENDLY_URL = "https://calendly.com/zenithra/30min"
+const CALENDLY_URL = "https://calendly.com/sharajpadda4939/new-meeting"
+const CALENDLY_EMBED_URL = `${CALENDLY_URL}?hide_gdpr_banner=1&background_color=0d1a12&text_color=ffffff&primary_color=2e7d4f`
+const SCRIPT_ID = "calendly-script"
+const STYLE_ID = "calendly-style"
+
+function ensureCalendlyAssets(): Promise<void> {
+  if (typeof window === "undefined") return Promise.resolve()
+
+  if (!document.getElementById(STYLE_ID)) {
+    const link = document.createElement("link")
+    link.id = STYLE_ID
+    link.rel = "stylesheet"
+    link.href = "https://assets.calendly.com/assets/external/widget.css"
+    document.head.appendChild(link)
+  }
+
+  if (window.Calendly) return Promise.resolve()
+
+  const existing = document.getElementById(SCRIPT_ID) as HTMLScriptElement | null
+  if (existing) {
+    return new Promise((resolve) => {
+      if (window.Calendly) {
+        resolve()
+        return
+      }
+      existing.addEventListener("load", () => resolve(), { once: true })
+    })
+  }
+
+  return new Promise((resolve, reject) => {
+    const script = document.createElement("script")
+    script.id = SCRIPT_ID
+    script.src = "https://assets.calendly.com/assets/external/widget.js"
+    script.async = true
+    script.onload = () => resolve()
+    script.onerror = () => reject(new Error("Failed to load Calendly widget"))
+    document.head.appendChild(script)
+  })
+}
 
 interface CalendlyEmbedProps {
   /** If true, renders as an inline section (for the /contact page). Default: inline. */
@@ -10,15 +48,47 @@ interface CalendlyEmbedProps {
 }
 
 export function CalendlyEmbed({ mode = "inline" }: CalendlyEmbedProps) {
+  const containerRef = React.useRef<HTMLDivElement>(null)
+
   React.useEffect(() => {
-    // Inject Calendly widget script once
-    if (document.getElementById("calendly-script")) return
-    const script = document.createElement("script")
-    script.id = "calendly-script"
-    script.src = "https://assets.calendly.com/assets/external/widget.js"
-    script.async = true
-    document.head.appendChild(script)
-  }, [])
+    if (mode !== "inline") return
+
+    let cancelled = false
+
+    const mountWidget = async () => {
+      try {
+        await ensureCalendlyAssets()
+        if (cancelled || !containerRef.current || !window.Calendly) return
+
+        // Clear any previous iframe so SPA remounts always re-init
+        containerRef.current.innerHTML = ""
+        window.Calendly.initInlineWidget({
+          url: CALENDLY_EMBED_URL,
+          parentElement: containerRef.current,
+        })
+      } catch {
+        // Fallback: open scheduling page in an iframe if the widget script fails
+        if (!cancelled && containerRef.current) {
+          containerRef.current.innerHTML = ""
+          const iframe = document.createElement("iframe")
+          iframe.src = CALENDLY_EMBED_URL
+          iframe.title = "Schedule a meeting"
+          iframe.style.width = "100%"
+          iframe.style.height = "700px"
+          iframe.style.border = "0"
+          containerRef.current.appendChild(iframe)
+        }
+      }
+    }
+
+    void mountWidget()
+
+    const el = containerRef.current
+    return () => {
+      cancelled = true
+      if (el) el.innerHTML = ""
+    }
+  }, [mode])
 
   if (mode === "inline") {
     return (
@@ -54,10 +124,10 @@ export function CalendlyEmbed({ mode = "inline" }: CalendlyEmbedProps) {
             </div>
           </motion.div>
 
-          {/* Calendly inline widget */}
+          {/* Calendly inline widget — initialized via initInlineWidget */}
           <div
+            ref={containerRef}
             className="calendly-inline-widget w-full overflow-hidden rounded-sm"
-            data-url={`${CALENDLY_URL}?hide_gdpr_banner=1&background_color=0d1a12&text_color=ffffff&primary_color=2e7d4f`}
             style={{ minWidth: 320, height: 700 }}
           />
         </div>
@@ -72,6 +142,7 @@ declare global {
   interface Window {
     Calendly?: {
       initPopupWidget: (opts: { url: string }) => void
+      initInlineWidget: (opts: { url: string; parentElement: HTMLElement }) => void
     }
   }
 }
@@ -82,10 +153,11 @@ declare global {
  */
 // eslint-disable-next-line react-refresh/only-export-components
 export function openCalendlyPopup() {
-  if (typeof window !== "undefined" && window.Calendly) {
-    window.Calendly.initPopupWidget({ url: CALENDLY_URL })
-  } else {
-    // Fallback: open in new tab if script hasn't loaded yet
-    window.open(CALENDLY_URL, "_blank", "noopener,noreferrer")
-  }
+  void ensureCalendlyAssets().then(() => {
+    if (typeof window !== "undefined" && window.Calendly) {
+      window.Calendly.initPopupWidget({ url: CALENDLY_URL })
+    } else {
+      window.open(CALENDLY_URL, "_blank", "noopener,noreferrer")
+    }
+  })
 }
